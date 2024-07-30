@@ -1,7 +1,7 @@
 Outline/TOC/TODO
 - [ ] Intro
 - [ ] Overview
-    - [ ] Primatives and common operations
+    - [ ] Primitives and common operations
     - [ ] Variables
     - [ ] Arrays
     - [ ] Conditionals
@@ -39,42 +39,109 @@ things
 up
 */
 ```
-### Primatives and common operations
+### Primitives and common operations
 JavaScript's most basic units of information are categorized into a few primitives[^0]: `boolean`, `number`, `string`, `undefined`, and `null`.
 
 Booleans are values of `true` or `false`. They're used in conditional statements, which we'll cover later.
 ```js
-true  // true!!!
-false // false...
-
-```
-
-Strings look like this:
-```js
-"this is a string"           // double quotes
-'this is also a string'      // single quote
-`this is also also a string` // backticks (that thing to the left of your 1 key)
-"strings " + 
+// true!!!
+true
+// false...
+false
+// logical or, yields true
+true || false
+// logical or, yields false
+true && false
+// logical not, yields false
+!true
 ```
 
 Numbers are stored as double-precision floating point numbers (think `double` in your aforementioned C-style language of choice). They look like:
 ```js
-1      // 1
-2.     // 2
-3.0    // 3
-400e-2 // 4 (scientific notation)
-0x5    // 5 (hexadecimal)
-0b110  // 6 (binary)
+// 1
+1
+// 2
+2.
+// 3
+3.0
+// 4 (scientific notation)
+400e-2
+// 5 (hexadecimal)
+0x5
+// 6 (binary)
+0b110
+// you can separate digits with an underscore (_) for readability
+// this yields 1000000 (one million)
+1_000_000
+// addition, yields 3
+1 + 2
+// subtraction, yields -1
+1 - 2
+// multiplication, yields 2
+1 * 2
+// division, yields 0.5
+1 / 2
+// modulo, yields 1
+1 % 2
 ```
 Please keep in the back of your mind that these are floats, and come with all the usual float weirdness (imprecision, nonassociativity, signed zeroes, infinities, NaNs). You should almost never have to worry about these things, but it's good to know that they exist just in case you ever do.
+
+Strings look like this:
+```js
+// double quotes
+"this is a string"
+// single quote
+'this is also a string'
+// backticks (that thing to the left of your 1 key)
+`this is also also a string`
+// you can use a backslash (\) to escape newlines for multi-line strings
+"this string spans \
+multiple lines!"
+// you can also use the usual escape sequences
+"newline:\n, tab:\t, carriage return: \r, null: \0"
+// strings are character arrays. you can access individual characters with a subscript.
+// this yields the character '3'. we'll talk more about arrays later!
+"012345"[3]
+// + appends strings together, yields "strings are nice"
+"strings " + "are nice"
+// other types are eagerly converted into strings when appended
+// this yields "this should say false: false"
+"this should say false: " + (false || (false && true))
+// backtick strings allow you to inject any js expression into a string with `${expr}`
+`this should say false: ${false || (false && true)}`
+```
+
+Undefined and null values are kind of special. Undefined is used to indicate that something hasn't been given an explicit value. You'll see undefined values if you try to do something like use a variable that hasn't been assigned to. Null values, on the other hand, are used to indicate an intentional value of 'nothing'. Most of the time, you shouldn't go out of your way to use undefined. It's primarily used by the interpreter to signal errors. Null is useful, though.
+<!-- TODO maybe cover operations with null and undefined? idk might be too niche for an article like this -->
+```js
+undefined
+null
+```
 
 [^0]: Okay, technically there's also [`bigint`](https://developer.mozilla.org/en-US/docs/Glossary/BigInt) and [`symbol`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol), but most readers probably don't need to worry about those.
 
 ## Variables
-<!-- TODO let vs var, dynamic typing -->
-You may, from time to time, actually want to store values for later use. You can do this using variables.
+<!-- TODO dynamic typing -->
+<!-- NOTE should we also mention variables with var or no keyword? probably shouldn't be used by new learners -->
+You may from time to time want to store values for later use. You can do this using variables.
 ```js
+// declares a new variable `variable0` with initial value `undefined`
+let variable0;
+// variables can be reassigned
+variable0 = "hi";
+// js is dynamically typed, so variables can also be reassigned to values with different types
+variable0 = 0;
+// const variables must be initialized at declaration and cannot be reassigned after declaration
+// const variable1; is not allowed!
+const variable1 = 1;
+// variable1 = 2; is not allowed!
+```
 
+## Arrays
+Arrays allow you to bundle multiple values into one data structure.
+```js
+// elements don't have to be the same type
+["value zero", "value one", 2, false]
 ```
 
 ## More resources
