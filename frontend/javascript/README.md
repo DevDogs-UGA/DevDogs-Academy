@@ -1,13 +1,13 @@
 Outline/TOC/TODO
-- [ ] Intro
+- [x] Intro
 - [ ] Overview
-    - [ ] Comments
-    - [ ] Semicolons
-    - [ ] Primitives and common operations
-    - [ ] Variables
-    - [ ] Comparisons
-        - [ ] `==` vs `===`
-        - [ ] Truthiness
+    - [x] Comments
+    - [x] Semicolons
+    - [x] Primitives and common operations
+    - [x] Variables
+    - [x] Comparisons
+        - [x] `==` vs `===`
+        - [x] Truthiness
     - [ ] Conditionals
         - [ ] Short circuiting with `&&`
         - [ ] Ternary
@@ -34,7 +34,7 @@ JavaScript (JS for short) is a dynamically typed, interpreted, multiparadigm lan
 
 This article is meant to help you hit the ground running. If you're here to review something specific, or you already feel good with your JavaScript abilities, please feel free to aggressively utilize the table of contents (located in the top right corner) to skip to the parts you care about.
 
-Finally, if you feel like messing around with the examples given in this article, you can open up a live JavaScript interpreter in your browser to see how things play out. On Firefox, this can be done with Ctrl+Shift+K (Cmd+Opt+K for macOS). For Chrome, hit Ctrl+Shift+J (Cmd+Opt+J for macOS). Type things in at the bottom of the panel that pops up to run your JS code.
+Finally, if you feel like messing around with the examples given in this article, you can open up a live JavaScript interpreter on [a blank page](about:blank) in your browser to see how things play out. On Firefox, this can be done with Ctrl+Shift+K (Cmd+Opt+K for macOS). For Chrome, hit Ctrl+Shift+J (Cmd+Opt+J for macOS). Type things in at the bottom of the panel that pops up to run your JS code.
 
 That's it for introductions. Let's get in to it!
 
@@ -178,7 +178,37 @@ You use this operation-then-assign syntax with any of the operations mentioned i
 <!-- NOTE omitting increment (++) and decrement (--) since imo they're often a code smell and explaining their subtleties would take up space disproportionate to their importance -->
 
 ### Comparisons
-Comparisons let you check whether data structures satisfy some sort of condition. JavaScript is a slightly unique language in that it 
+<!-- TODO should we talk about null coalescing and optional chaining? -->
+Comparisons let you check whether data structures satisfy some sort of condition.
+
+```js
+// double-equals (==) compares values. this yields true:
+0 == 0
+// but beware! the interpreter will try and convert types to allow for comparison.
+// this can lead to unexpected behavior like this (comparing string and number),
+// which yields true
+"0" == 0
+
+// if you want to do an equals comparison while respecting type differences,
+// you'd use a triple-equals (===) comparison.
+0 === 0 // true
+"0" === 0 // false
+
+// a similar distinction exists for the not-equals comparisons
+// the following are equivalent, and yield false
+!(0 == 0)
+0 != "0"
+// the following are equivalent, and yield true
+!(0 === "0")
+0 !== "0"
+
+// finally, we have the ordering comparisons. these work as you would expect in any other
+// language, with the caveat that types are always converted (like with ==)
+0 > 0 // false
+0 >= "0" // true
+0 < "0" // false
+0 <= 0 // true
+```
 
 JavaScript also has something called 'truthy' and 'falsy' values. Basically, all non-Boolean values will behave like `true` or `false` if you try to use them as if they were Boolean. The rule is pretty simple - all values behave like `true` except for the following, which behave like `false`:
 - `0`
