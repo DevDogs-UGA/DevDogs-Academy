@@ -227,7 +227,51 @@ JavaScript also has something called 'truthy' and 'falsy' values. Basically, all
 ```
 
 ### Conditionals
-TODO
+<!-- NOTE omitting switch statements since they're not terribly common -->
+Conditionals let you make decisions about whether or not a bit of code should run. They come in the form of a Boolean condition to test and a block to execute (or not, depending on the condition).
+```js
+if (true) {
+    // the condition is true, this will run
+}
+
+if (false) {
+    // the condition is false, this won't run
+}
+
+// else statements are run when the previous if condition was false
+if (false) {
+    // won't run
+} else {
+    // will run
+}
+
+// if you want to check a number of conditions and only execute one thing, you can use else-ifs
+if (false) {
+    // won't run
+} else if (true) {
+    // will run
+} else {
+    // won't run, a previous condition was true
+}
+
+// recall our previous overviews of logical operators and truthy values -
+// they both apply here. the condition just has to be a boolean!
+if (true || false) {
+    // will run
+}
+
+if (true && false) {
+    // won't run
+}
+
+if ("") {
+    // won't run (the empty string is falsy)
+}
+
+if ("foo") {
+    // will run (nonempty strings are truthy)
+}
+```
 
 ### Arrays
 Arrays let you bundle multiple values into one data structure.
