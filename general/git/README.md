@@ -2,24 +2,28 @@
 
 - [x] What is Git
 - [x] Key Terms
-    - [ ] Repository
-    - [ ] Commit
-    - [ ] Branch
+    - [x] Repository
+    - [x] Commit
+    - [x] Branch
+    - [ ] Working Directory
+    - [ ] HEAD
 - [ ] Commands
     - [x] git config
     - [x] git init
     - [x] git clone
-    - [ ] git checkout
-    - [ ] git branch
-    - [ ] git add
-    - [ ] git status
-    - [ ] git commit
-    - [ ] git push
-    - [ ] git log
+    - [x] git checkout
+    - [x] git branch
+    - [x] git add
+    - [x] git status
+    - [x] git commit
+    - [x] git remote
+    - [x] git push
+    - [x] git log
     - [ ] git fetch
-    - [ ] git pull
     - [ ] git merge
+    - [ ] git pull
     - [ ] git rebase
+- [ ] Workflows
 
 
 # What is Git
@@ -27,11 +31,16 @@ Git is a free and open-source version control system created by Linus Torvalds. 
 
 
 # Key Terms
-**Repository (AKA repo)** - A folder where are the files being tracket by git are located. It's also where the `.git` folder is located which contains all the meta data.
+### **Repository (AKA repo)** 
+A folder where are the files being tracket by git are located. It's also where the `.git` folder is located which contains all the meta data.
 
-**Commit** - A commit is when you take a snapshot of changes made to your repository. Commits are logged and and used to track and manage the history of your repository.
+### **Commit** 
+A commit is when you take a snapshot of changes made to your repository. Commits are logged and and used to track and manage the history of your repository.
 
-**Branch** - A branch is an offshoot from the main line of development. It's like a safe zone where you can commit changes without affecting the main line. This is especially useful when working with others because you can experiment and make changes without interfering with code others are working on. When you are done making changes you can merge your changes into the main line of development.
+### **Branch**
+A branch is an offshoot from the main line of development. It's like a safe zone where you can commit changes without affecting the main line. This is especially useful when working with others because you can experiment and make changes without interfering with code others are working on. When you are done making changes you can merge your changes into the main line of development.
+
+### **Working Directory**
 
 <img src="./media/branch-visual.png" alt="Branch Visual Image" width="200"/>
 <img src="./media/branch-merge-visual.png" alt="Branch Merge Visual" width="200"/>
@@ -72,3 +81,70 @@ All `git init` does is initialize your github repository. If you run `git init` 
 
 ---
 ### git branch
+
+`git branch` lists all of your branches in your repo.
+
+`git branch branchName` creates a branch but doesn't switch you to it.
+
+`git branch -d branchName` deletes specified branch.
+
+`git branch -a` lists remote branches.
+
+---
+### git add
+
+`git add filePath` moves all of your changes from the specified file/folder into the staging area. 
+The staging area is where you put changes that are ready to [commit](#commit). We will get into how to commit shortly.
+
+---
+### git status
+
+`git status` shows which files are in the staging area and which files are in your [working directory](#working-directory).
+
+---
+### git commit
+
+`git commit` records or takes a snapshot of your staged changes. 
+
+`git commit -m "your message"`. The -m flag lets you add a message to your snapshot.
+
+`git commit -a` commits all changes in your [working directory](#working-directory) even if they aren't staged.
+
+`git commit --amend` adds your staged changes on top of your last snapshot. This command doesn't create a new snapshot, it edits the last one.
+
+---
+### git remote
+
+This command lets you view and manage your remote repository connections
+
+`git remote` will list your connections
+
+`git remote -v` will list your connections with urls
+
+`git remote add nameOfRemote url` will create a new connection to the given url, with the given name.
+
+---
+### git push
+
+`git push remoteName localBranch` updates your remote repository to match your local repository.
+
+We can use the `-u` flag to make git remember our connection with origin.
+
+`git push -u remoteName localBranch`
+
+Now when we push our changes in the future we can simply run `git push`
+
+---
+### git log
+
+`git log` will list details of all of the repository's snapshots.
+
+---
+### git fetch
+
+`git fetch`
+
+
+
+---
+### git merge
