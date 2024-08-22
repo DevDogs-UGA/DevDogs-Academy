@@ -29,7 +29,7 @@ GameRunner runner = new GameRunner(game2);
 
 Tutorial References (Highly recommend watching!)
 - https://www.youtube.com/watch?v=f6DHAgL7FWc (More beginner friendly, decent examples)
-- https://www.youtube.com/watch?v=If1Lw4pLLEo (Fast, comprehensive, good examples)
+- https://www.youtube.com/watch?v=If1Lw4pLLEo (Fast, comprehensive, good examples) [Also has a more recentt playlist making an example project with Spring and Springboot]
 
 # Gen Topics
 - IoC containers (Inversion of Control)
