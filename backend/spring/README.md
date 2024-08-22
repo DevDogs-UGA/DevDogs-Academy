@@ -7,8 +7,7 @@ This overview was created from notes following 2 youtube tutorials (links provid
 ## IoC
 Inversion of control (IoC) is a **principle** where the control of creating objects (in this case) is given to something (Ex. Spring Framework) other than the developer. In Spring this is done through a **design pattern** called dependency injection
 
-## DI
-Dependency injection in Spring 
+## DI - Dependency injection in Spring 
 - Constructor injection
 - Setter injection
 - Field injection (Not recommended)
@@ -18,7 +17,7 @@ Dependency injection in Spring
 Coupling: How much work is involved in changing something?
 - Tightly coupled: Engine to a car, Computer to your house (harder to move)
 - Loosely coupled: Tire to a car, laptop to your house (can take anywhere)
-* In software, loosely coupled is often better as code is always changing and iterating to better versions
+In software, loosely coupled is often better as code is always changing and iterating to better versions
 
 Tightly coupled code:
 SuperMario mario = new SuperMario();
@@ -70,7 +69,7 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
 #### XML configuration (using Component)
     ex.
     App.java
-    public class App {
+    ```public class App {
         public static void main(String[] args) {
             ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml") // Your own xml file and file name
 
@@ -83,7 +82,7 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
 
     <beans [xml custom tag definition here, can find on spring website]>
         <bean id="vehicle" class="com.navin.Telusko.Car"></bean>
-    </beans>
+    </beans>```
 
 #### Annotation based configuration * (Components, Autowired)
     ex.
