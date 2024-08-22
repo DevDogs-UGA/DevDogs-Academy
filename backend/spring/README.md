@@ -1,3 +1,36 @@
+## IoC
+Inversion of control (IoC) is a **principle** where the control of creating objects (in this case) is given to something (Ex. Spring Framework) other than the developer. In Spring this is done through a **design pattern** called dependency injection
+
+## DI
+Dependency injection in Spring 
+- Constructor injection
+- Setter injection
+- Field injection (Not recommended)
+    - Loose coupling (code for interfaces)
+
+## Coupling
+Coupling: How much work is involved in changing something?
+- Tightly coupled: Engine to a car, Computer to your house (harder to move)
+- Loosely coupled: Tire to a car, laptop to your house (can take anywhere)
+* In software, loosely coupled is often better as code is always changing and iterating to better versions
+
+Tightly coupled code:
+SuperMario mario = new SuperMario();
+GameRunner runner = new GameRunner(mario);
+// GameRunner can only run mario games, and code needs to be changed within GamerRunner to run others
+
+Loosely coupled code:
+* GamingConsole is an interface
+GameingConsole game1 = new SuperMario();
+GameingConsole game2 = new PacMan();
+GameRunner runner = new GameRunner(game1);
+GameRunner runner = new GameRunner(game2);
+// Because all games must implement the GameingConsole interface, GameRunner can accept any GameingConsole object in the constructor
+
+Tutorial References (Highly recommend watching!)
+- https://www.youtube.com/watch?v=f6DHAgL7FWc (More beginner friendly, decent examples)
+- https://www.youtube.com/watch?v=If1Lw4pLLEo (Fast, comprehensive, good examples)
+
 # Gen Topics
 - IoC containers (Inversion of Control)
 - Data access framework
@@ -337,3 +370,57 @@ Achieving dependency injections through configuration
         }
     }
 
+### Another Example of implementing Spring -> Hello World Application
+
+App.java
+package ...
+
+imports
+
+public class App {
+    public static void main(String[] args) {
+        // 1: Launch a Spring Context
+
+        var context = new AnnotationConfigApplicationContext(AppConfig.class)
+
+        // 2: Configure the things we want Spring to manage - @Configuration
+        System.out.println(context.getBean("name")); // Returns "Jenn"
+        System.out.println(context.getBean("address")) // Returns error, we renamed address -> address2
+
+        System.out.println(context.getBean(Address.class)) // Can use type of Bean
+        
+        
+    }
+}
+
+AppConfig.java
+package ...
+
+imports
+
+record Person (String name, int age) {};
+record Address (String firstLine, String city) {};
+
+public class AppConfig {
+
+    @Bean
+    public String name() {
+        return "Jenn";
+    }
+    @Bean
+    public int age() {
+        return 15;
+    }
+
+    @Bean
+    public Person person() {
+        var person = new Person("Jack", 18);
+        return person;
+    }
+
+    @Bean(name = "address2")
+    public Address address() {
+        return new Address("Baker Street", "London");
+    }
+
+}
