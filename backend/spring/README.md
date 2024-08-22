@@ -3,12 +3,13 @@ This overview was created from notes following 2 youtube tutorials (links provid
 
 ## Prerequisites
 - Must have a solid understanding of Java and OOP (particularly interfaces)
+- Must have familiarity with Maven/Gradle (2nd YouTube tutorial can provide that)
 
 ## IoC
 Inversion of control (IoC) is a **principle** where the control of creating objects (in this case) is given to something (Ex. Spring Framework) other than the developer. In Spring this is done through a **design pattern** called dependency injection
 
 ## DI - Dependency injection in Spring 
-Instead of typically using ```obj = **new** Obj();``` We leave the object creation and insertion to Spring
+Instead of typically using ```Thing object = new Thing();``` We leave the object creation and insertion to Spring
 - Constructor injection
 - Setter injection
 - Field injection (Not recommended)
@@ -34,7 +35,7 @@ GameRunner runner = new GameRunner(game2);
 // Because all games must implement the GameingConsole interface, GameRunner can accept any GameingConsole object in the constructor
 
 ## Spring Container/Context (IoC Container)
-(is within JVM [Java Virutal Machine])
+(Spring Containers operate within the JVM [Java Virutal Machine])
 - Manages Spring beans & their lifecycle
 - Bean Factory: Basic Spring Container (Not really used)
 - **Application Context**: Advanced Spring Container w/ enterprise-specific features
@@ -54,9 +55,8 @@ Tutorial References (Highly recommend watching!)
 - https://www.youtube.com/watch?v=If1Lw4pLLEo (Fast, comprehensive, good examples) [Also has a more recentt playlist making an example project with Spring and Springboot]
 I watched the 2nd one first, and put the 1st on 1.5x to review.
 
-# Gen Topics
+# General Spring Topics
 - IoC containers (Inversion of Control)
-- Data access framework
 - Dependency injections
     - Injecting object dependencies
 
@@ -70,6 +70,7 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
 #### XML configuration (using Component)
 ex.
 App.java
+```
     public class App {
         public static void main(String[] args) {
             ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml") // Your own xml file and file name
@@ -78,16 +79,18 @@ App.java
             obj.drive();
         }
     }
+```
 spring.xml (in src)
     <?xml version="1.0" encoding="UTF-8"?>
 
     <beans [xml custom tag definition here, can find on spring website]>
         <bean id="vehicle" class="com.navin.Telusko.Car"></bean>
-    </beans>```
+    </beans>
 
 #### Annotation based configuration * (Components, Autowired)
 ex.
 App.java
+```
     public class App {
         public static void main(String[] args) {
             ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml") // Your own xml file and file name
@@ -96,6 +99,7 @@ App.java
             obj.drive();
         }
     }
+```
 spring.xml (in src)
     <?xml version="1.0" encoding="UTF-8"?>
 
