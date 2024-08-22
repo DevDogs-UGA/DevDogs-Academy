@@ -67,9 +67,9 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
 
 ### Achieving dependency injections through configuration
 #### XML configuration (using Component)
-    ex.
-    App.java
-    ```public class App {
+ex.
+App.java
+    public class App {
         public static void main(String[] args) {
             ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml") // Your own xml file and file name
 
@@ -77,7 +77,7 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
             obj.drive();
         }
     }
-    spring.xml (in src)
+spring.xml (in src)
     <?xml version="1.0" encoding="UTF-8"?>
 
     <beans [xml custom tag definition here, can find on spring website]>
@@ -85,8 +85,8 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
     </beans>```
 
 #### Annotation based configuration * (Components, Autowired)
-    ex.
-    App.java
+ex.
+App.java
     public class App {
         public static void main(String[] args) {
             ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml") // Your own xml file and file name
@@ -95,14 +95,14 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
             obj.drive();
         }
     }
-    spring.xml (in src)
+spring.xml (in src)
     <?xml version="1.0" encoding="UTF-8"?>
 
     <beans [xml custom tag definition here, can find on spring website]>
        <context:component-scan base-package='com.navin.Telusko'></context:component-scan> 
     </beans>
 
-    Car.java
+Car.java
     package com.navin.Telusko;
     @Component // <- important
     public class Car implements Vehicle {
@@ -112,8 +112,7 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
     }
 
 #### Combo Annotation & Xml w/ Bean property tags
-    ex.
-    App.java
+App.java
     public class App {
         public static void main(String[] args) {
             ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml") // Your own xml file and file name
@@ -122,7 +121,7 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
             System.out.println(t);
         }
     }
-    spring.xml (in src)
+spring.xml (in src)
     <?xml version="1.0" encoding="UTF-8"?>
 
     <beans [xml custom tag definition here, can find on spring website]>
@@ -133,7 +132,7 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
        </bean>
     </beans>
 
-    Car.java
+Car.java
     package com.navin.Telusko;
 
     @Component // <- important
@@ -143,7 +142,7 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
         }
     }
 
-    Tire.java
+Tire.java
     package com.navin.Telusko;
 
     public class Tire {
@@ -164,8 +163,7 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
     }
 
 #### Constructor Injection (Still mixed Annotation and Xml Config) & Autowired
-    ex.
-    App.java
+App.java
     public class App {
         public static void main(String[] args) {
             ApplicationContext context = new ClassPathXmlApplicationContext("spring.xml") // Your own xml file and file name
@@ -174,7 +172,7 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
             obj.drive();
         }
     }
-    spring.xml (in src)
+spring.xml (in src)
     <?xml version="1.0" encoding="UTF-8"?>
 
     <beans [xml custom tag definition here, can find on spring website]>
@@ -185,7 +183,7 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
        </bean>
     </beans>
 
-    Car.java
+Car.java
     package com.navin.Telusko;
 
     @Component // <- important
@@ -207,7 +205,7 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
         }
     }
 
-    Tire.java
+Tire.java
     package com.navin.Telusko;
 
     @Component
@@ -234,10 +232,10 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
     }
 
 #### Annotation Confirguation using Maven (New Example)
-    1. Create Maven project (Quick start maven archetype)
-    2. Add dependencies to pom.xml from Maven Repository
-        - Spring context copy and paste
-    Samsung.java
+1. Create Maven project (Quick start maven archetype)
+2. Add dependencies to pom.xml from Maven Repository
+    - Spring context copy and paste
+Samsung.java
     package com.telusko.SpringAnno;
 
 
@@ -260,7 +258,7 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
         }
     }
 
-    App.java
+App.java
     package com.telusko.SpringAnno;
 
     public class App {
@@ -272,7 +270,7 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
         }
     }
 
-    AppConfig.java
+AppConfig.java
     package com.telusko.SpringAnno;
 
     // import statements auto inserted here
@@ -291,14 +289,14 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
 
     }
 
-    MobileProcessor.java
+MobileProcessor.java
     package com.telusko.SpringAnno;
 
     public interface MobileProcessor {
         void process();
     }
 
-    Snapdragon.java
+Snapdragon.java
     package com.telusko.SpringAnno;
 
     public class Snapdragon implements MobileProcessor {
@@ -307,12 +305,11 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
         }
     }
 #### Annotation Component (AutoWird Primary Qualifier)
-    1. Add Component tags to Samsung and Snapdragon
-    2. Add ComponentScan to AppConfig to find components (it looks by type)
-        - defaults to class name decapitalized (Samsung->samsung)
-        - With multiple components, you can define a primary (@Primary) or a qualifier (@Qualifier("id"))
-        - 
-    Samsung.java
+1. Add Component tags to Samsung and Snapdragon
+2. Add ComponentScan to AppConfig to find components (it looks by type)
+    - defaults to class name decapitalized (Samsung->samsung)
+    - With multiple components, you can define a primary (@Primary) or a qualifier (@Qualifier("id"))
+Samsung.java
     package com.telusko.SpringAnno;
 
     @Component
@@ -336,7 +333,7 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
         }
     }
 
-    App.java
+App.java
     package com.telusko.SpringAnno;
 
     // Spring Core Annotations
@@ -349,7 +346,7 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
         }
     }
 
-    AppConfig.java
+AppConfig.java
     package com.telusko.SpringAnno;
 
     // import statements auto inserted here
@@ -360,14 +357,14 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
 
     }
 
-    MobileProcessor.java
+MobileProcessor.java
     package com.telusko.SpringAnno;
 
     public interface MobileProcessor {
         void process();
     }
 
-    Snapdragon.java
+Snapdragon.java
     package com.telusko.SpringAnno;
 
     // importing Component
@@ -380,7 +377,7 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
         }
     }
 
-    MediaTek.java
+MediaTek.java
     package com.telusko.SpringAnno;
 
     // importing Component
@@ -395,53 +392,53 @@ I watched the 2nd one first, and put the 1st on 1.5x to review.
 ### Another Example of implementing Spring -> Hello World Application
 
 App.java
-package ...
+    package ...
 
-imports
+    imports
 
-public class App {
-    public static void main(String[] args) {
-        // 1: Launch a Spring Context
-        try(var context = new AnnotationConfigApplicationContext(AppConfig.class)) {
-            // 2: Configure the things we want Spring to manage - @Configuration
-            context.getBean(GamingConsole.class).up();
+    public class App {
+        public static void main(String[] args) {
+            // 1: Launch a Spring Context
+            try(var context = new AnnotationConfigApplicationContext(AppConfig.class)) {
+                // 2: Configure the things we want Spring to manage - @Configuration
+                context.getBean(GamingConsole.class).up();
 
-            context.getBean(GameRunner.class).run();
+                context.getBean(GameRunner.class).run();
+            }
+            
+
+            
+            System.out.println(context.getBean("name")); // Returns "Jenn"
+            System.out.println(context.getBean("address")) // Returns error, we renamed address -> address2
+
+            System.out.println(context.getBean(Address.class)) // Can use type of Bean
+            
+            
         }
-        
-
-        
-        System.out.println(context.getBean("name")); // Returns "Jenn"
-        System.out.println(context.getBean("address")) // Returns error, we renamed address -> address2
-
-        System.out.println(context.getBean(Address.class)) // Can use type of Bean
-        
-        
     }
-}
 
 AppConfig.java
-package ...
+    package ...
 
-imports
+    imports
 
-record Person (String name, int age) {};
-record Address (String firstLine, String city) {};
+    record Person (String name, int age) {};
+    record Address (String firstLine, String city) {};
 
-public class AppConfig {
+    public class AppConfig {
 
-    @Bean
-    public GamingConsole game() {
-        var game = new PacmanGame();
-        return game;
+        @Bean
+        public GamingConsole game() {
+            var game = new PacmanGame();
+            return game;
+        }
+
+        @Bean
+        public GameRunner gameRunner(GamingConsole game) {
+            var gameRunner = new GameRunner(game);
+            return game;
+        } // Can also change new GameRunner(game) -> new GameRunner(game()) with no parameters
     }
-
-    @Bean
-    public GameRunner gameRunner(GamingConsole game) {
-        var gameRunner = new GameRunner(game);
-        return game;
-    } // Can also change new GameRunner(game) -> new GameRunner(game()) with no parameters
-}
 
 ## Tips
 
