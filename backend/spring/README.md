@@ -450,3 +450,8 @@ public class AppConfig {
 // Prints the list out to System, the :: is a method reference
 // Some internal Spring Beans will be listed alongside your own defined Beans
 Arrays.stream(context.getBeanDefinitionNames()).forEach(System.out::println);
+
+## More Resources
+- https://www.javatpoint.com/spring-tutorial
+- https://www.baeldung.com/spring-tutorial
+- https://www.geeksforgeeks.org/spring/
