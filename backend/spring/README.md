@@ -1,3 +1,9 @@
+# Spring Overview
+This overview was created from notes following 2 youtube tutorials (links provided later in the article) and Spring tutorial articles
+
+## Prerequisites
+- Must have a solid understanding of Java and OOP (particularly interfaces)
+
 ## IoC
 Inversion of control (IoC) is a **principle** where the control of creating objects (in this case) is given to something (Ex. Spring Framework) other than the developer. In Spring this is done through a **design pattern** called dependency injection
 
@@ -27,9 +33,26 @@ GameRunner runner = new GameRunner(game1);
 GameRunner runner = new GameRunner(game2);
 // Because all games must implement the GameingConsole interface, GameRunner can accept any GameingConsole object in the constructor
 
+## Spring Container/Context (IoC Container)
+(is within JVM [Java Virutal Machine])
+- Manages Spring beans & their lifecycle
+- Bean Factory: Basic Spring Container (Not really used)
+- **Application Context**: Advanced Spring Container w/ enterprise-specific features
+    - Good for web apps, web services, REST API, and microservices
+    - Easy internationalization
+    - Easy integration with Spring AOP (Aspect oriented programming)
+
+### POJO: Plain Old Java Object
+- No constraints
+- Any Java Object is a POJO
+
+### Spring Bean: Any Java Object managed by Spring
+- Spring uses IoC Container (Ex. Application Context) to manage these objects
+
 Tutorial References (Highly recommend watching!)
-- https://www.youtube.com/watch?v=f6DHAgL7FWc (More beginner friendly, decent examples)
+- https://www.youtube.com/watch?v=f6DHAgL7FWc (More beginner friendly, decent examples, not as concise)
 - https://www.youtube.com/watch?v=If1Lw4pLLEo (Fast, comprehensive, good examples) [Also has a more recentt playlist making an example project with Spring and Springboot]
+I watched the 2nd one first, and put the 1st on 1.5x to review.
 
 # Gen Topics
 - IoC containers (Inversion of Control)
@@ -43,8 +66,8 @@ Tutorial References (Highly recommend watching!)
     - pom.xml file
     - Maven repository for xml dependencies
 
-Achieving dependency injections through configuration
-- XML configuration (using Component)
+### Achieving dependency injections through configuration
+#### XML configuration (using Component)
     ex.
     App.java
     public class App {
@@ -62,7 +85,7 @@ Achieving dependency injections through configuration
         <bean id="vehicle" class="com.navin.Telusko.Car"></bean>
     </beans>
 
-- Annotation based configuration * (Components, Autowired)
+#### Annotation based configuration * (Components, Autowired)
     ex.
     App.java
     public class App {
@@ -89,7 +112,7 @@ Achieving dependency injections through configuration
         }
     }
 
-- Combo Annotation & Xml w/ Bean property tags
+#### Combo Annotation & Xml w/ Bean property tags
     ex.
     App.java
     public class App {
@@ -141,7 +164,7 @@ Achieving dependency injections through configuration
         }
     }
 
-- Constructor Injection (Still mixed Annotation and Xml Config) & Autowired
+#### Constructor Injection (Still mixed Annotation and Xml Config) & Autowired
     ex.
     App.java
     public class App {
@@ -211,7 +234,7 @@ Achieving dependency injections through configuration
         }
     }
 
-- Annotation Confirguation using Maven (New Example)
+#### Annotation Confirguation using Maven (New Example)
     1. Create Maven project (Quick start maven archetype)
     2. Add dependencies to pom.xml from Maven Repository
         - Spring context copy and paste
@@ -284,7 +307,7 @@ Achieving dependency injections through configuration
             System.out.println("Word's best CPU");
         }
     }
-- Annotation Component (AutoWird Primary Qualifier)
+#### Annotation Component (AutoWird Primary Qualifier)
     1. Add Component tags to Samsung and Snapdragon
     2. Add ComponentScan to AppConfig to find components (it looks by type)
         - defaults to class name decapitalized (Samsung->samsung)
@@ -380,10 +403,15 @@ imports
 public class App {
     public static void main(String[] args) {
         // 1: Launch a Spring Context
+        try(var context = new AnnotationConfigApplicationContext(AppConfig.class)) {
+            // 2: Configure the things we want Spring to manage - @Configuration
+            context.getBean(GamingConsole.class).up();
 
-        var context = new AnnotationConfigApplicationContext(AppConfig.class)
+            context.getBean(GameRunner.class).run();
+        }
+        
 
-        // 2: Configure the things we want Spring to manage - @Configuration
+        
         System.out.println(context.getBean("name")); // Returns "Jenn"
         System.out.println(context.getBean("address")) // Returns error, we renamed address -> address2
 
@@ -404,23 +432,21 @@ record Address (String firstLine, String city) {};
 public class AppConfig {
 
     @Bean
-    public String name() {
-        return "Jenn";
-    }
-    @Bean
-    public int age() {
-        return 15;
+    public GamingConsole game() {
+        var game = new PacmanGame();
+        return game;
     }
 
     @Bean
-    public Person person() {
-        var person = new Person("Jack", 18);
-        return person;
-    }
-
-    @Bean(name = "address2")
-    public Address address() {
-        return new Address("Baker Street", "London");
-    }
-
+    public GameRunner gameRunner(GamingConsole game) {
+        var gameRunner = new GameRunner(game);
+        return game;
+    } // Can also change new GameRunner(game) -> new GameRunner(game()) with no parameters
 }
+
+## Tips
+
+#### List all Spring Beans
+// Prints the list out to System, the :: is a method reference
+// Some internal Spring Beans will be listed alongside your own defined Beans
+Arrays.stream(context.getBeanDefinitionNames()).forEach(System.out::println);
