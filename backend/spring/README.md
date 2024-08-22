@@ -448,15 +448,6 @@ App.java
 
                 context.getBean(GameRunner.class).run();
             }
-            
-
-            
-            System.out.println(context.getBean("name")); // Returns "Jenn"
-            System.out.println(context.getBean("address")) // Returns error, we renamed address -> address2
-
-            System.out.println(context.getBean(Address.class)) // Can use type of Bean
-            
-            
         }
     }
 ```
@@ -466,9 +457,6 @@ AppConfig.java
     // package ...
 
     // imports (from Spring ususally)
-
-    record Person (String name, int age) {};
-    record Address (String firstLine, String city) {};
 
     public class AppConfig {
 
