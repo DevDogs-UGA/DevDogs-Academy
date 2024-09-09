@@ -7,6 +7,9 @@ What is a relational database? A relational database consists of tables made up 
 MySQL, often pronounced "My Ess Que Ell" or "My Sequel", is the Relational Database Management System(RDBMS) that we'll be using. We will be learning the basics in this article and I would recommend you to download MySQL and follow along. You can find the download [here](https://dev.mysql.com/downloads/installer/).  
 
 
+### Very quick disclaimer
+***This article is student-created and run so there may be some incorrect info and there will definitely be typos. If you notice a mistake or feel information can be conveyed in a more effective way please feel free to [open an issue](https://github.com/DevDogs-UGA/DevDogs-Academy/issues) and we'll get right on it.***
+
 ## The very basics 
 
 This is meant as an introductory into SQL and as such we won't be delving into all the commands. The goal is that by the end of the article you can confidently build and navigate a database on your own. 
@@ -144,3 +147,36 @@ Had we modified **Pay** to not accept NULL values this would've resulted in an e
 
 
 ## Modifications and altering tables 
+
+
+Our first modification to the table will be correcting the NULL value with the **UPDATE** command:
+~~~~sql
+UPDATE Employees SET Pay = 7.50 WHERE EmployeeID = 5;
+~~~~
+You'll notice a couple of things here. First, we have a new command, **UPDATE**, which takes in the table, column, and an identifier (EmployeeID). Second, unlike Java, the '=' can act as either a comparison operator or assignment operator.
+
+So what if we do if we want to make it so **Pay**, or any other column can't be null? We can run the command: 
+~~~~sql
+ALTER TABLE Employees MODIFY COLUMN Pay DECIMAL(5,2) NOT NULL;
+~~~~
+Now if we try and run a command like the one below it will not execute because **Pay** can't be null:
+~~~~sql
+INSERT INTO Employees VALUES (6,"Jim","Bob",NULL);
+~~~~
+We can also set a default value to a column. For instance, we can set **Pay** to have a default value of 0.00 so if we insert data without a pay value it will default to 0.00.
+~~~~sql
+ALTER TABLE Employees ALTER COLUMN Pay SET DEFAULT 0.00;
+~~~~
+Now we can run the command below and MySQL should assign **Pay** to 0.00.
+~~~~sql
+INSERT INTO Employees(EmployeeID, FirstName, LastName) VALUES (6, "Jim", "Bob");
+~~~~
+You can check your table with the **SELECT * FROM Employees** to make sure it looks like:
+| EmployeeID | FirstName | LastName | Pay  |
+|------------|-----------|----------|------|
+| 1          | Hank      | Lean     | 12.50|
+| 2          | Dean      | Smith    | 14.00|
+| 3          | Brock     | Oli      | 33.00|
+| 4          | Doc       | Venture  | 40.00|
+| 5          | Henry     | Killenger| 7.50 |
+| 6          | Jim       | Bob      | 0.00 |
