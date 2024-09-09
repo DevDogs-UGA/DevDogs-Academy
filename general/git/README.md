@@ -7,7 +7,7 @@
     - [x] Branch
     - [x] Working Directory
     - [x] Staging Area
-    - [ ] HEAD
+    - [x] HEAD
 - [x] Commands
     - [x] git config
     - [x] git init
@@ -41,17 +41,15 @@ A commit is when you take a snapshot of changes made to your repository. Commits
 ### **Branch**
 A branch is an offshoot from the main line of development. It's like a safe zone where you can commit changes without affecting the main line. This is especially useful when working with others because you can experiment and make changes without interfering with code others are working on. When you are done making changes you can merge your changes into the main line of development.
 
-
-<img src="./media/branch-visual.png" alt="Branch Visual Image" width="200"/>
-<img src="./media/branch-merge-visual.png" alt="Branch Merge Visual" width="200"/>
-
-Left,visualization of branching. Right, visualization of merging the branch.
-
 ### **Working Directory**
 The working directory is your project folder. Your .git folder and any other files in your project are stored there.
 
 ### **Staging Area**
 The staging area is where you put changes that are ready to [commit](#commit).
+
+<img src="./media/basic-diagram.png" alt="Diagram of Areas of Git">
+
+This is a basic diagram of the different of areas of your local repository.
 
 ### **HEAD**
 HEAD is a reference that points to the latest [commit](#commit) of a branch.
@@ -103,6 +101,7 @@ All `git init` does is initialize your github repository. If you run `git init` 
 ### git add
 
 `git add filePath` moves all of your changes from the specified file/folder into the [staging area](#staging-area). 
+
 
 
 ---
@@ -163,17 +162,25 @@ Now when we push our changes in the future we can simply run `git push`
 
 `git merge localBranchName` will merge your commits from the branch you specify on top of the [HEAD]() of the current branch you are on. It will apply the changes to your working directory.
 
+<img src="./media/branch-merge.png" alt="Branch Merge Visual">
+
 ---
 ### git pull
 
 `git pull` runs [`git fetch`](#git-fetch) and then [`git merge`](#git-merge).
 
+
+<img src="./media/detailed-diagram.png" alt="Diagram of Areas of Git Including Fetch, Merge, and Pull">
+
 ---
 ### git rebase
 
-`git rebase branchName` will change the base of your current branch to the [HEAD]() of the specified branch. It is important to keep in mind that when this happens the commits from your current branch are replaced with new commits. These new commits share the same content of the deleted ones but have a different ids.
+`git rebase branchName` will change the base of your current branch to the [HEAD](#head) of the specified branch. It is important to keep in mind that when this happens the commits from your current branch are replaced with new commits. These new commits share the same content of the deleted ones but have a different ids.
 
 This command is helpful because it keeps your history clear and linear.
+
+<img src="./media/rebase.png" alt="Rebase Visual">
+
 
 # Workflows
 
