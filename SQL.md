@@ -180,3 +180,42 @@ You can check your table with the **SELECT * FROM Employees** to make sure it lo
 | 4          | Doc       | Venture  | 40.00|
 | 5          | Henry     | Killenger| 7.50 |
 | 6          | Jim       | Bob      | 0.00 |
+
+
+## Deletion
+
+Now, it turns out it's not legal to pay an employee $0 an hour, so what are we going to do? Obviously, we're going to fire Jim Bob. The command the delete an entry is simple:
+~~~~sql
+DELETE FROM Employees WHERE EmployeeID = 6;
+~~~~
+This successfully fires Jim Bob from our database. However, be careful because if you forget the WHERE clause and just run "DELETE FROM Employees;" you'll end up clearing your entire table.
+If you happen to want to remove a table you use:
+~~~~sql
+DROP TABLE name;
+~~~~
+Or a database:
+~~~~sql
+DROP DATABASE name;
+~~~~
+
+## Modifications
+
+Primary keys are vital to databases and each table should have one. A primary key is a modifier to a column that constricts data to being ***unique*** and ***not null***. This allows the database to have a unique identifier for every entry in a table. If Jim Bob and Henry Killenger ended up having the same Employee ID they both would've been deleted. Sure you can specify both employee id and name but this is bad practice and as a company grows you'll eventually have people with the same names and if there's no way to differentiate them in the database you're going to have a bad time. To avoid this headache and create a primary key use:
+~~~~sql
+ALTER TABLE Employees ADD PRIMARY KEY(EmployeeID);
+~~~~
+If at some point you decide you want to change primary keys or if you don't want one all together you run:
+~~~~sql
+ALTER TABLE Employees DROP PRIMARY KEY;
+~~~~
+***Quick PSA: Each table has ONE primary key, but the primary key can be made up of more than one column. If you're interested in learning more you can check it out [here](https://www.w3schools.com/mysql/mysql_primarykey.asp).***
+
+
+Another modifier that can make life easier is **AUTO_INCREMENT** which automatically creates and adds one to a field. **We will NOT be using auto increment in the tutorial, because when you delete an entry and add another it keeps incrementing which can get funky when we keep adding and removing entries.** IF we were going to do it however we would use:
+~~~~sql
+ALTER TABLE Employees MODIFY EmployeeID INT AUTO_INCREMENT;
+~~~~
+To undo the auto increment from a column run:
+~~~~sql
+ALTER TABLE Employees MODIFY EmployeeID int(11);
+~~~~
