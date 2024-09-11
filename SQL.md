@@ -70,7 +70,9 @@ In SQL the rows of a table represent individual records and these records contai
 After installing and setting up your workbench we're going to create our first database, TUTDB, with the command:
 ~~~~sql
 CREATE DATABASE TUTDB;
+USE TUTDB;
 ~~~~
+***We run "USE TUTDB;" so MySQL knows that we will be working with this database. This shouldn't be necessary unless you already have another database but we'll run it anyway.***
 Once we have our database made, we're going to create our first table. When we create a table we need to specify the column names and types. *(Don't worry if you don't know all the information you want to store just yet, you can always modify the table at a later point to add on or remove columns.)*
 
 For our purposes, we'll be creating a table to store employee data for a dealership:
@@ -204,6 +206,7 @@ Primary keys are vital to databases and each table should have one. A primary ke
 ~~~~sql
 ALTER TABLE Employees ADD PRIMARY KEY(EmployeeID);
 ~~~~
+
 If at some point you decide you want to change primary keys or if you don't want one all together you run:
 ~~~~sql
 ALTER TABLE Employees DROP PRIMARY KEY;
@@ -215,7 +218,32 @@ Another modifier that can make life easier is **AUTO_INCREMENT** which automatic
 ~~~~sql
 ALTER TABLE Employees MODIFY EmployeeID INT AUTO_INCREMENT;
 ~~~~
-To undo the auto increment from a column run:
+Notice when we modify the EmployeeID column we have to specify its data type, int. This is because MySQL treats the MODIFY command as a complete redefinition of the column this means we should always redefine it with the same data type it had originally, unless you WANT to change the data type as well. If you forgot the schema for your table, two easy ways to check is by using the drop-down menu to the left and clicking on the column OR run the command "SHOW CREATE TABLE Employees;" which will give you more details details after clicking the Form Editor tab.
+![mysql example2](https://github.com/user-attachments/assets/faffa393-e7c6-4782-a2a4-77d1ffd5048d)
+
+
+To undo the auto-increment from a column run:
 ~~~~sql
-ALTER TABLE Employees MODIFY EmployeeID int(11);
+ALTER TABLE Employees MODIFY EmployeeID int(10);
 ~~~~
+***Here the 11 in int(10) is a semi-arbitrary number that represents the 'width' of an int. This does not change the range of ints that can be stored and only matters if you use ZEROFILL, in which case it would become entries like 6 would become 0000000006.***
+
+
+
+Now what if we want to modify a column to accept only unique or non-null data without setting it as a primary key? All you need to do is run:
+~~~~sql
+ALTER TABLE Employees MODIFY COLUMN FirstName VARCHAR(50) NOT NULL;
+~~~~
+Now MySQL won't let us insert any null data into the FirstName column and if we want to remove this constraint we just re-modify the column:
+~~~~sql
+ALTER TABLE Employees MODIFY COLUMN FirstName VARCHAR(50);
+~~~~
+Making a column only accept UNIQUE inputs is very similar to NOT NULL:
+~~~~sql
+ALTER TABLE Employees MODIFY COLUMN FirstName VARCHAR(50) UNIQUE;
+~~~~
+However, it does differ when removing the UNIQUE constraint. If you try and recast it without the constraint like we did with NOT NULL it won't remove the modifier. To remove the UNIQUE restraint we run:
+~~~~sql
+ALTER TABLE Employees DROP INDEX FirstName;
+~~~~
+Now we can have multiple employees with the same first name. I don't plan on using the UNIQUE or NOT NULL constraint on the FirstName column for the rest of the tutorial, so feel free to remove it if you want.
