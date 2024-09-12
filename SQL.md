@@ -12,7 +12,7 @@ MySQL, often pronounced "My Ess Que Ell" or "My Sequel", is the Relational Datab
 
 ## The very basics 
 
-This is meant as an introductory into SQL and as such we won't be delving into all the commands. The goal is that by the end of the article you can confidently build and navigate a database on your own. 
+This is meant as an introductory into SQL and as such we won't be delving into all the commands. The goal is that by the end of the article, you can confidently build and navigate a database on your own. 
 
 Like Java, every command ends with a semicolon. So if I wanted to create a database called "headache" I would do it like so:
 ~~~~sql
@@ -73,6 +73,7 @@ CREATE DATABASE TUTDB;
 USE TUTDB;
 ~~~~
 ***We run "USE TUTDB;" so MySQL knows that we will be working with this database. This shouldn't be necessary unless you already have another database but we'll run it anyway.***
+
 Once we have our database made, we're going to create our first table. When we create a table we need to specify the column names and types. *(Don't worry if you don't know all the information you want to store just yet, you can always modify the table at a later point to add on or remove columns.)*
 
 For our purposes, we'll be creating a table to store employee data for a dealership:
@@ -127,6 +128,28 @@ After running a "SELECT * FROM Employees" your table should look like the one be
 | 2          | Dean      | Smith    | 14.00|
 | 3          | Brock     | Oli      | 33.00|
 | 4          | Doc       | Venture  | 40.00|
+
+
+## Operators
+
+Like Java, SQL has operators that we can use in our queries and processes. Below is a handy table you can refer to if you're looking for something specific.
+| Operator     | Description                                             | Example                             |
+|--------------|---------------------------------------------------------|-------------------------------------|
+| `=`          | Checks if two values are equal                          | `SELECT * FROM Employees WHERE Pay = 100;` |
+| `<>` or `!=` | Checks if two values are not equal                      | `SELECT * FROM Employees WHERE Pay != 100;` |
+| `>`          | Checks if a value is greater than another               | `SELECT * FROM Employees WHERE Pay > 100;`  |
+| `<`          | Checks if a value is less than another                  | `SELECT * FROM Employees WHERE Pay < 100;`  |
+| `>=`         | Checks if a value is greater than or equal to another   | `SELECT * FROM Employees WHERE Pay >= 100;` |
+| `<=`         | Checks if a value is less than or equal to another      | `SELECT * FROM Employees WHERE Pay <= 100;` |
+| `BETWEEN`    | Checks if a value is within a specified range           | `SELECT * FROM Employees WHERE Pay BETWEEN 50 AND 100;` |
+| `IN`         | Checks if a value is within a set of specified values   | `SELECT * FROM Employees WHERE Pay IN (100, 200, 300);` |
+| `LIKE`       | Searches for a specified pattern in a column            | `SELECT * FROM Employees WHERE FirstName LIKE 'H%';` |
+| `IS NULL`    | Checks if a value is `NULL`                             | `SELECT * FROM Employees WHERE LastName IS NULL;` |
+| `IS NOT NULL`| Checks if a value is not `NULL`                         | `SELECT * FROM Employees WHERE LastName IS NOT NULL;` |
+| `AND`        | Combines multiple conditions, all must be true          | `SELECT * FROM Employees WHERE Pay > 100 AND Pay < 200;` |
+| `OR`         | Combines multiple conditions, at least one must be true | `SELECT * FROM Employees WHERE Pay > 100 OR Pay < 50;`  |
+| `NOT`        | Negates a condition                                     | `SELECT * FROM Employees WHERE NOT Pay = 100;`          |
+
 
 
 ### Can you leave out information?
