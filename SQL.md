@@ -6,6 +6,8 @@ What is a relational database? A relational database consists of tables made up 
 
 MySQL, often pronounced "My Ess Que Ell" or "My Sequel", is the Relational Database Management System(RDBMS) that we'll be using. We will be learning the basics in this article and I would recommend you to download MySQL and follow along. You can find the download [here](https://dev.mysql.com/downloads/installer/).  
 
+I am using version 8.0.34 and would recommend you use the same if you want to follow along. This is ***not*** the most recent version and there are differences between versions and some commands may be slightly different under another version.
+
 
 ### Very quick disclaimer
 ***This article is student-created and run so there may be some incorrect info and there will definitely be typos. If you notice a mistake or feel information can be conveyed in a more effective way please feel free to [open an issue](https://github.com/DevDogs-UGA/DevDogs-Academy/issues) and we'll get right on it.***
@@ -94,7 +96,7 @@ SELECT * FROM Employees;
 
 ## The select command
 
-The SELECT command is your best friend, chances are you'll be running it after every other command to check on your database and make sure your tables look good. In SQL you follow the **SELECT** command with an option to specify what and how many entries you want returned. A list of some of these options can be found below. Another thing to take note of is **FROM**. This keyword is followed by the table you want to pull information from, in our case we pulled from the Employees table.
+The SELECT command is your best friend, chances are you'll be running it after every other command to check on your database and make sure your tables look good. In SQL you follow the **SELECT** command with an option to specify what and how many entries you want returned. A list of some of these options can be found below. Another thing to take note of is **FROM**. This keyword is followed by the table you want to pull information from, in our case we pulled from the Employees table. For this tutorial, you should use the '*' after SELECT to see all the columns but as your table and databases grow you'll eventually want to specify which columns you want to view.
 | Option           | Description                                                                 | Example                                                                 |
 |------------------|-----------------------------------------------------------------------------|-------------------------------------------------------------------------|
 | `*`              | Selects all columns from a table.                                           | `SELECT * FROM table_name;`                                             |
@@ -270,3 +272,43 @@ However, it does differ when removing the UNIQUE constraint. If you try and reca
 ALTER TABLE Employees DROP INDEX FirstName;
 ~~~~
 Now we can have multiple employees with the same first name. I don't plan on using the UNIQUE or NOT NULL constraint on the FirstName column for the rest of the tutorial, so feel free to remove it if you want.
+
+
+
+## Adding a new column/re-naming
+
+Looking back, it may have been overkill to have deleted Jim Bob from the database entirely and deleting employees could have impacts on other tables as we expand our database. So, we're going to create a new column that tells us if the employee is currently employed or not. 
+~~~~sql
+ALTER TABLE Employees ADD COLUMN Employeed BOOLEAN;
+~~~~
+Now we have a column that will hold True if the person is a current employee, or False if they are no longer with the organization. However, because we just added this new column all its entries are NULL. Since Jim Bob is the only person currently not employed with us we will just run: 
+~~~~sql
+UPDATE Employees SET Employeed = 1 WHERE EmployeeID <= 6;
+~~~~
+In MySQL BOOLEAN is an alias for TINYINT(1) so they store the exact same thing, however, we'll be using BOOLEAN for clarity. You'll notice that we're not explicitly storing the values True or False and instead storing 1 and 0. You can still use TRUE or FALSE when querying or setting boolean values and MySQL will understand you're looking for 0 or 1.
+
+Now, we're going to add Jim Bob back to our table as not employed with us:
+~~~~sql
+INSERT INTO Employees VALUES(7, "Jim", "Bob", 0.00, 0);
+~~~~
+If you want to confirm Jim Bob is back you can run the following command to view all employees not currently employed by the organization:
+~~~~sql
+SELECT * FROM Employees WHERE Employeed = FALSE;
+~~~~
+
+Some of you may have picked up on and begrudgingly named our Employed column "Employeed". I did promise typos and to correct this and re-name the column we just run:
+~~~~sql
+ALTER TABLE Employees CHANGE Employeed Employed BOOLEAN;
+~~~~
+This is one of those commands that has been updated in more recent versions of MySQL to be more intuitive. If you are using a more recent version you can find pretty much all equivalent commands [here](https://www.w3schools.com/sql/sql_alter.asp). 
+As of right now your table should look something like this:
+| EmployeeID | FirstName | LastName | Pay  | Employed |
+|------------|-----------|----------|------|----------|
+| 1          | Hank      | Lean     | 12.50|1         |
+| 2          | Dean      | Smith    | 14.00|1|
+| 3          | Brock     | Oli      | 33.00|1|
+| 4          | Doc       | Venture  | 40.00|1|
+| 5          | Henry     | Killenger| 7.50 |1|
+| 6          | Jim       | Bob      | 0.00 |0|
+
+
