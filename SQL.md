@@ -236,7 +236,8 @@ If at some point you decide you want to change primary keys or if you don't want
 ~~~~sql
 ALTER TABLE Employees DROP PRIMARY KEY;
 ~~~~
-***Quick PSA: Each table has ONE primary key, but the primary key can be made up of more than one column. If you're interested in learning more you can check it out [here](https://www.w3schools.com/mysql/mysql_primarykey.asp).***
+***Quick PSA: Each table has ONE primary key, but the primary key can be made up of more than one column. If you're interested in learning more you can check it out [here](https://www.w3schools.com/mysql/mysql_primarykey.asp).
+You can also designate a primary key when you first create a table, we just did so after to teach SQL a piece at a time.***
 
 
 Another modifier that can make life easier is **AUTO_INCREMENT** which automatically creates and adds one to a field. **We will NOT be using auto increment in the tutorial, because when you delete an entry and add another it keeps incrementing which can get funky when we keep adding and removing entries.** IF we were going to do it however we would use:
@@ -312,3 +313,30 @@ As of right now your table should look something like this:
 | 6          | Jim       | Bob      | 0.00 |0|
 
 
+# A brave new table
+A relational database would be useless if there were no other tables to relate to, so let's create one. Our new table will be ***Sales*** and we'll be storing: TransactionID (BIGINT), EmployeeID (INT), GrossSale (DOUBLE (11,2)), TransactionDate (DATE), CustomerID (INT)
+~~~~sql
+CREATE TABLE Sales (
+    TransactionID BIGINT,              
+    EmployeeID INT,                    
+    GrossSale DOUBLE(11, 2),           
+    TransactionDate DATE,              
+    CustomerID INT
+);
+~~~~
+Now, let's add some data!
+~~~~sql
+INSERT INTO Sales (TransactionID, EmployeeID, GrossSale, TransactionDate, CustomerID)
+VALUES
+    (1, 1, 250.50, '2024-01-10', 26),
+    (2, 2, 500.99, '2024-02-12', 7),
+    (3, 3, 150.25, '2024-03-15', 13),
+    (4, 4, 300.75, '2024-04-18', 69),
+    (5, 6, 1200.40, '2024-05-20', 38),
+    (6, 2, 850.30, '2024-06-25', 72),
+    (7, 5, 450.60, '2024-07-30', 38);
+~~~~
+With this table we're going to need a primary key, the most logical key we can use is the TransactionID column, so:
+~~~~sql
+ALTER TABLE Sales ADD PRIMARY KEY(TransactionID);
+~~~~
