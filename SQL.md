@@ -391,3 +391,40 @@ Or for cascade:
 ~~~~sql
 ALTER TABLE Sales ADD FOREIGN KEY(EmployeeID) references Employees(EmployeeID) ON DELETE CASCADE;
 ~~~~
+
+
+## Joins
+
+What are joins and what do they do? Joins are used to combine rows from two or more tables based on a related column between them. They allow you to retrieve data from multiple tables by specifying how the tables should be linked together. There a many types and below is a quick visual guide for you to refer back to:
+![mysql joins2](https://github.com/user-attachments/assets/6077fce0-56a3-4203-83a3-2e9d63764df3)
+
+Before we start using joins let's first add some more data to our tables:
+~~~~sql
+INSERT INTO Employees VALUES 
+(7, "David", "Bowie", 12.50, 1),
+(8, "Shelia", "Moppet", 14.00, 1),
+(9, "Gary", "Mingle", 7.50, 1),
+(10, "Billy", "White", 40.00, 1),
+(11, "Hunter", "Gathers", 13.00, 1),
+(12, "Timothy", "Traster", 13.00, 0),
+(13, "Jah", "Bullard", 15.00, 1),
+(14, "Ben", "Potter", 17.50, 0);
+INSERT INTO Employees VALUES 
+(7, "David", "Bowie", 12.50, 1),
+(8, "Shelia", "Moppet", 14.00, 1),
+(9, "Gary", "Mingle", 7.50, 1),
+(10, "Billy", "White", 40.00, 1),
+(11, "Hunter", "Gathers", 13.00, 1),
+(12, "Timothy", "Traster", 13.00, 0),
+(13, "Jah", "Bullard", 15.00, 1),
+(14, "Ben", "Potter", 17.50, 0);
+~~~~
+Now both our tables hold twice as much info for us to work with!
+When we talk about left and right joining, typically the table you use first in the command is the left and the table typed second is the right. To run a left join with Employees as the left table we'll run:
+~~~~sql
+SELECT * FROM Employees LEFT JOIN Sales ON Employees.EmployeeID = Sales.EmployeeID
+~~~~
+Notice we used "ON Employees.EmployeeID = Sales.EmployeeID". This allows MySQL to match the records from the Employees table to the Sales table based on the EmployeeID column that they share. Also, we use table.column to tell MySQL which columns to use instead of "column name" FROM "table name". 
+
+Now, MySQL should have pulled up a table consisting of ***at least*** one entry per employee. 
+Some employees have two entries; one for each transaction they've been involved in. There are also employees that have NULL values for their Sales part of the table, this is because they're leeches and didn't make any sales.
