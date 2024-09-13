@@ -4,7 +4,7 @@ SQL, often pronounced either "Sequel" or "Ess Que Ell", stands for Structured Qu
 
 What is a relational database? A relational database consists of tables made up of columns and rows, like an Excel spreadsheet, where each row has a unique input with its own identifying information determined by its columns. These tables are *related* to each other through *keys*, which we'll get into more later. 
 
-MySQL, often pronounced "My Ess Que Ell" or "My Sequel", is the Relational Database Management System(RDBMS) that we'll be using. We will be learning the basics in this article and I would recommend you to download MySQL and follow along. You can find the download [here](https://dev.mysql.com/downloads/installer/).  
+MySQL, often pronounced "My Ess Que Ell" or "My Sequel", is the Relational Database Management System(RDBMS) that we'll be using. We will be learning the basics in this article and I would recommend you to download MySQL Workbench and follow along. You can find the download [here](https://dev.mysql.com/downloads/installer/).  
 
 I am using version 8.0.34 and would recommend you use the same if you want to follow along. This is ***not*** the most recent version and there are differences between versions and some commands may be slightly different under another version.
 
@@ -313,7 +313,7 @@ As of right now your table should look something like this:
 | 6          | Jim       | Bob      | 0.00 |0|
 
 
-# A brave new table
+# Our second table
 A relational database would be useless if there were no other tables to relate to, so let's create one. Our new table will be ***Sales*** and we'll be storing: TransactionID (BIGINT), EmployeeID (INT), GrossSale (DOUBLE (11,2)), TransactionDate (DATE), CustomerID (INT)
 ~~~~sql
 CREATE TABLE Sales (
@@ -324,6 +324,8 @@ CREATE TABLE Sales (
     CustomerID INT
 );
 ~~~~
+***If you're not sure of the purpose of the EmployeeID in the Sales table, it's to identify who made the sale for a transaction.***
+
 Now, let's add some data!
 ~~~~sql
 INSERT INTO Sales (TransactionID, EmployeeID, GrossSale, TransactionDate, CustomerID)
@@ -339,4 +341,53 @@ VALUES
 With this table we're going to need a primary key, the most logical key we can use is the TransactionID column, so:
 ~~~~sql
 ALTER TABLE Sales ADD PRIMARY KEY(TransactionID);
+~~~~
+
+
+## The foreign key
+The foreign key is the constraint we'll be applying to columns to relate tables together. The foreign key can be related to either primary keys of another table or unique columns, however, relating through primary keys is much more common. For our Sales table, we'll use the EmployeeID as the foreign key to relate the Sales table to the Employees table. To do this we'll run: 
+~~~~sql
+ALTER TABLE Sales ADD FOREIGN KEY(EmployeeID) references Employees(EmployeeID);
+~~~~
+Now, our two tables are related. Notice we specified which table we were referencing "Employees" and then the specific column in "()". If we try to add a record into our Sales table with an EmployeeID that doesn't exist in our Employees table it will fail. The insert below with an EmployeeID of 100 results in an error:
+~~~~sql
+INSERT INTO Sales VALUES(8, 100, 3.99, '2024-10-10', 33);
+~~~~
+Furthermore, if we try to delete a record from our Employees table that is referenced by our Sales table it will throw an error:
+~~~~sql
+DELETE FROM Employees WHERE EmployeeID = 6;
+~~~~
+Foreign keys have names and to drop a foreign key we will want to know its name. To check the name MySQL auto-generated for our foreign key go to the schema drop-down, find the sales table, then foreign keys and you'll see the foreign key(s).
+![mysql example3](https://github.com/user-attachments/assets/63efc46b-9259-4c7b-8630-e358333c6e6c)
+To drop the key run:
+~~~~sql
+ALTER TABLE Sales DROP FOREIGN KEY name;
+~~~~
+When creating your foreign key you can also choose its name with a command set up like:
+~~~~sql
+ALTER TABLE Sales ADD CONSTRAINT name FOREIGN KEY(EmployeeID) references Employees(EmployeeID);
+~~~~
+For this tutorial, we'll be using a foreign key to connect our tables so if you've removed it, kindly add it back.
+
+
+### ON DELETE
+
+What if we want to be able to delete entries from our Employees table even if they occur in the Sales table? Well, two options are ON DELETE SET NULL or ON DELETE CASCADE. ON DELETE SET NULL simply sets the value in the related column to null if it's deleted from the parent column. However, ON DELETE CASCADE will delete the entire row in the child's database. Given our current Sales table below, if we delete Employee 2 from the Employees table with the foreign key set to ON DELETE SET NULL it will just change the EmployeeID value to null in transactions 2 and 6. However, if the key is set to ON DELETE CASCADE and employee 2 is deleted, all the data for transactions 2 and 6 will be deleted.
+| TransactionID | EmployeeID | GrossSale | TransactionDate | CustomerID |
+|---------------|------------|-----------|-----------------|------------|
+| 1             | 1          | 250.50    | 2024-01-10      | 26         |
+| 2             | 2          | 500.99    | 2024-02-12      | 7          |
+| 3             | 3          | 150.25    | 2024-03-15      | 13         |
+| 4             | 4          | 300.75    | 2024-04-18      | 69         |
+| 5             | 6          | 1200.40   | 2024-05-20      | 38         |
+| 6             | 2          | 850.30    | 2024-06-25      | 72         |
+| 7             | 5          | 450.60    | 2024-07-30      | 38         |
+
+If you want to add these options to a foreign key you'll first want to remove it (as we did above). Then you will recreate it with the command: 
+~~~~sql
+ALTER TABLE Sales ADD FOREIGN KEY(EmployeeID) references Employees(EmployeeID) ON DELETE SET NULL;
+~~~~
+Or for cascade:
+~~~~sql
+ALTER TABLE Sales ADD FOREIGN KEY(EmployeeID) references Employees(EmployeeID) ON DELETE CASCADE;
 ~~~~
