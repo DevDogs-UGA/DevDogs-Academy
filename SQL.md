@@ -511,3 +511,34 @@ Procedures, like functions, are meant to take the place of large chunks of code 
 | **Transaction Control** | Can contain and control transactions (i.e., `COMMIT`, `ROLLBACK`). | Cannot contain transaction control statements like `COMMIT` or `ROLLBACK`. |
 | **Use Case**        | Use when you need to perform complex operations, possibly involving multiple steps or queries. | Use when you need to perform calculations or return a derived value in a query. |
 
+Let's create a procedure to get our employees' full name (what we used above):
+~~~~sql
+DELIMITER //
+CREATE PROCEDURE get_employees()
+BEGIN
+SELECT CONCAT(FirstName, ' ', LastName) AS Full_Name FROM Employees;
+END //
+DELIMITER ;
+~~~~
+The delimiter is how MySQL knows where the end of the command is, so when we create a new procedure we change our delimiter to something that won't be found in our code block, in this case "//". At the end of the code block we changed the delimiter back to ';'. Now when we call the function it should return the first and last names of all employees.
+~~~~sql
+CALL get_employees();
+~~~~
+
+For our projects, we may end up creating procedures with a little more complexity. For instance, while working on a better bus app there was a procedure that took the user's coordinates, found the distance to every stop, and then returned the 'n' closest stops. It looked like:
+~~~~sql
+CREATE PROCEDURE `FinalCalculate`(user_lat DOUBLE, user_lon DOUBLE, n INT)
+BEGIN
+    SELECT stopid, latitude, longitude,
+    6371 * 2 * ASIN(
+        SQRT(
+            SIN(RADIANS((user_lat - latitude) / 2)) * SIN(RADIANS((user_lat - latitude) / 2)) +
+            COS(RADIANS(user_lat)) * COS(RADIANS(latitude)) *
+            SIN(RADIANS((user_lon - longitude) / 2)) * SIN(RADIANS((user_lon - longitude) / 2))
+        )
+    ) AS distance
+    FROM ospdb.stopinfo
+    ORDER BY distance
+    LIMIT n;
+END
+~~~~
