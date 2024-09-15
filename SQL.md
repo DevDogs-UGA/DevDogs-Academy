@@ -422,9 +422,27 @@ INSERT INTO Employees VALUES
 Now both our tables hold twice as much info for us to work with!
 When we talk about left and right joining, typically the table you use first in the command is the left and the table typed second is the right. To run a left join with Employees as the left table we'll run:
 ~~~~sql
-SELECT * FROM Employees LEFT JOIN Sales ON Employees.EmployeeID = Sales.EmployeeID
+SELECT * FROM Employees LEFT JOIN Sales ON Employees.EmployeeID = Sales.EmployeeID;
 ~~~~
 Notice we used "ON Employees.EmployeeID = Sales.EmployeeID". This allows MySQL to match the records from the Employees table to the Sales table based on the EmployeeID column that they share. Also, we use table.column to tell MySQL which columns to use instead of "column name" FROM "table name". 
 
 Now, MySQL should have pulled up a table consisting of ***at least*** one entry per employee. 
 Some employees have two entries; one for each transaction they've been involved in. There are also employees that have NULL values for their Sales part of the table, this is because they're leeches and didn't make any sales.
+
+To see which entries have no relation/overlap with the Sales table we can run:
+~~~~sql
+SELECT * FROM Employees LEFT JOIN Sales ON Employees.EmployeeID = Sales.EmployeeID WHERE Sales.EmployeeID IS NULL;
+~~~~
+This should have brought up Timothy and Ben's employee information along with null values for the Sale info.
+Unfortunately, MySQL doesn't have a command for FULL OUTER JOIN, so we have to create our own version consisting of the UNION between the left outer join and right outer join.
+~~~~sql
+SELECT * FROM Employees LEFT JOIN Sales ON Employees.EmployeeID = Sales.EmployeeID
+UNION
+SELECT * FROM Employees RIGHT JOIN Sales ON Employees.EmployeeID = Sales.EmployeeID;
+~~~~
+This output should look exactly like our left join command. This is because our foreign key in the Sales table prevents there from being NULL or an EmployeeID that doesn't belong to the Employee table.
+
+Inner joins allow us to combine and view information that overlaps from both tables. For us that means when we run our command, MySQL should return the employee and sale information for each sale and exclude Timothy and Ben because their EmployeeIDs can't be found in the sales table. Try:
+~~~~sql
+SELECT * FROM Employees INNER JOIN Sales ON Employees.EmployeeID = Sales.EmployeeID;
+~~~~
