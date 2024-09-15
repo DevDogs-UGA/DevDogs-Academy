@@ -409,15 +409,14 @@ INSERT INTO Employees VALUES
 (12, "Timothy", "Traster", 13.00, 0),
 (13, "Jah", "Bullard", 15.00, 1),
 (14, "Ben", "Potter", 17.50, 0);
-INSERT INTO Employees VALUES 
-(7, "David", "Bowie", 12.50, 1),
-(8, "Shelia", "Moppet", 14.00, 1),
-(9, "Gary", "Mingle", 7.50, 1),
-(10, "Billy", "White", 40.00, 1),
-(11, "Hunter", "Gathers", 13.00, 1),
-(12, "Timothy", "Traster", 13.00, 0),
-(13, "Jah", "Bullard", 15.00, 1),
-(14, "Ben", "Potter", 17.50, 0);
+INSERT INTO Sales VALUES
+(8, 8, 146.73, '2024-08-17', 41),
+(9, 10, 299.99, '2024-08-17', 7),
+(10, 8, 182.37, '2024-09-15', 12),
+(11, 7, 175.69, '2024-09-18', 13),
+(12, 13, 350.00, '2024-10-07', 7),
+(13, 11, 239.99, '2024-10-21', 4),
+(14, 9, 411.98, '2024-11-29', 39);
 ~~~~
 Now both our tables hold twice as much info for us to work with!
 When we talk about left and right joining, typically the table you use first in the command is the left and the table typed second is the right. To run a left join with Employees as the left table we'll run:
@@ -433,7 +432,15 @@ To see which entries have no relation/overlap with the Sales table we can run:
 ~~~~sql
 SELECT * FROM Employees LEFT JOIN Sales ON Employees.EmployeeID = Sales.EmployeeID WHERE Sales.EmployeeID IS NULL;
 ~~~~
-This should have brought up Timothy and Ben's employee information along with null values for the Sale info.
+This should have brought up Timothy and Ben's employee information along with null values for the Sale info. To run a right join, all we have need to do is change LEFT to RIGHT. Beucase our Sales table has an EmployeeID for each entry the information MySQL gives us won't be different.
+~~~~sql
+SELECT * FROM Employees RIGHT JOIN Sales ON Employees.EmployeeID = Sales.EmployeeID;
+~~~~
+Or:
+~~~~sql
+SELECT * FROM Employees RIGHT JOIN Sales ON Employees.EmployeeID = Sales.EmployeeID WHERE Sales.EmployeeID IS NULL;
+~~~~
+
 Unfortunately, MySQL doesn't have a command for FULL OUTER JOIN, so we have to create our own version consisting of the UNION between the left outer join and right outer join.
 ~~~~sql
 SELECT * FROM Employees LEFT JOIN Sales ON Employees.EmployeeID = Sales.EmployeeID
@@ -446,3 +453,61 @@ Inner joins allow us to combine and view information that overlaps from both tab
 ~~~~sql
 SELECT * FROM Employees INNER JOIN Sales ON Employees.EmployeeID = Sales.EmployeeID;
 ~~~~
+
+## Functions
+
+MySQL has an absurd amount of functions and I would **highly** recommend giving a quick skim over them [here](https://dev.mysql.com/doc/refman/8.4/en/built-in-function-reference.html). Below is a table of some common built-in functions, however, there are plenty more that serve their own purposes. 
+| **Function**      | **Description**                                                | **Example**                                               |
+|-------------------|----------------------------------------------------------------|-----------------------------------------------------------|
+| **`COUNT()`**      | Returns the count of non-null values in a column               | `SELECT COUNT(*) FROM Employees;`                         |
+| **`SUM()`**        | Adds up the values in a numeric column                         | `SELECT SUM(Employed) FROM Employees;`                      |
+| **`AVG()`**        | Calculates the average of a numeric column                     | `SELECT AVG(Pay) FROM Employees;`                      |
+| **`MIN()`**        | Returns the minimum value in a column                          | `SELECT MIN(Pay) FROM Employees;`                      |
+| **`MAX()`**        | Returns the maximum value in a column                          | `SELECT MAX(Pay) FROM Employees;`                      |
+| **`LENGTH()`**     | Returns the length of a string (in characters)                 | `SELECT LENGTH(LastName) FROM Employees;`                     |
+| **`CONCAT()`**     | Concatenates two or more strings                              | `SELECT CONCAT(FirstName, ' ', LastName) FROM Employees;` |
+| **`LOWER()`**      | Converts a string to lowercase                                | `SELECT LOWER(Name) FROM Employees;`                      |
+| **`UPPER()`**      | Converts a string to uppercase                                | `SELECT UPPER(Name) FROM Employees;`                      |
+| **`SUBSTRING()`**  | Extracts a substring from a string                            | `SELECT SUBSTRING(Name, 1, 3) FROM Employees;`            |
+| **`NOW()`**        | Returns the current date and time                             | `SELECT NOW();`                                           |
+| **`CURDATE()`**    | Returns the current date                                      | `SELECT CURDATE();`                                       |
+| **`DATE_FORMAT()`**| Formats a date according to a specified format                | `SELECT DATE_FORMAT(NOW(), '%Y-%m-%d');`                  |
+| **`DATEDIFF()`**   | Returns the difference in days between two dates              | `SELECT DATEDIFF('2024-12-31', CURDATE());`               |
+| **`IFNULL()`**     | Returns a specified value if the expression is `NULL`          | `SELECT IFNULL(Pay, 0) FROM Employees;`                |
+| **`COALESCE()`**   | Returns the first non-null value in a list of expressions      | `SELECT COALESCE(Bonus, Pay, 0) FROM Employees;`       |
+| **`ROUND()`**      | Rounds a numeric value to the nearest integer or decimal place | `SELECT ROUND(Pay, 2) FROM Employees;`                 |
+| **`FLOOR()`**      | Returns the largest integer less than or equal to a number     | `SELECT FLOOR(Pay) FROM Employees;`                    |
+| **`CEIL()`**       | Returns the smallest integer greater than or equal to a number | `SELECT CEIL(Pay) FROM Employees;`                     |
+| **`RAND()`**       | Returns a random floating-point number between 0 and 1         | `SELECT RAND();`                                          |
+| **`INSTR()`**      | Returns the position of the first occurrence of a substring    | `SELECT INSTR(Name, 'John') FROM Employees;`              |
+| **`REPLACE()`**    | Replaces occurrences of a substring with another substring     | `SELECT REPLACE(FirstName, 'John', 'Jon') FROM Employees;`     |
+
+A function that could help our business would be AVG() so we can find the average gross sale. We would do this as:
+~~~~sql
+SELECT AVG(GrossSale) FROM Sales;
+~~~~
+Now we know the average sale without manually adding and dividing all the entries ourselves. The column name "AVG(GrossSale)" isn't very intuitive so we'll use an alias:
+~~~~sql
+SELECT AVG(GrossSale) AS Average FROM Sales;
+~~~~
+An alias was mentioned earlier, BOOLEAN is an alias for TINYINT(1), which means it's just given a temporary name to make readability or queries easier. Another use for this would be returning the full names of employees in a single column:
+~~~~sql
+SELECT CONCAT(FirstName, ' ', LastName) AS Full_Name FROM Employees;
+~~~~
+
+MySQL allows you to create your own functions too if there's a very specific action you want to take. If you're interested in creating functions, which differ from procedures, there's a very informative and quick 3-minute video [here](https://www.youtube.com/watch?v=j73M7OIkEcY).
+
+## Stored Procedures
+
+Procedures, like functions, are meant to take the place of large chunks of code and streamline tasks. 
+| **Aspect**          | **Procedure**                                               | **Function**                                                 |
+|---------------------|-------------------------------------------------------------|--------------------------------------------------------------|
+| **Purpose**         | Used to perform actions, such as modifying data or executing a series of operations. | Typically used to compute and return a single value or result based on inputs. |
+| **Return Value**    | Does not need to return a value. Can return multiple values using `OUT` parameters. | Must return a single value using the `RETURN` statement. |
+| **Invocation**      | Called using `CALL` or `EXECUTE` in SQL. Example: `CALL procedure_name();` | Called like a regular function in SQL. Example: `SELECT function_name();` |
+| **Usage in Queries**| Cannot be directly used in SQL queries (e.g., `SELECT`, `WHERE`). | Can be used directly in SQL queries like `SELECT`, `WHERE`, etc. |
+| **Side Effects**    | Can perform actions that modify the database (such as `INSERT`, `UPDATE`, `DELETE`). | Cannot modify the database. It's designed to compute and return values without side effects. |
+| **Parameters**      | Supports `IN`, `OUT`, and `INOUT` parameters, allowing it to accept input and output multiple values. | Only supports `IN` parameters (input values) and must return a single value. |
+| **Transaction Control** | Can contain and control transactions (i.e., `COMMIT`, `ROLLBACK`). | Cannot contain transaction control statements like `COMMIT` or `ROLLBACK`. |
+| **Use Case**        | Use when you need to perform complex operations, possibly involving multiple steps or queries. | Use when you need to perform calculations or return a derived value in a query. |
+
