@@ -542,3 +542,21 @@ BEGIN
     LIMIT n;
 END
 ~~~~
+
+## Indexes
+
+Indexes are used to find data in a column more quickly. Typically, MySQL processes queries row by row, which may not impact smaller tables like ours. However, as companies store more data, tables like Sales can expand to thousands or even millions of rows. Indexing speeds up the querying process by creating a separate sorted table that it can use as a reference and effectively perform a binary search. We have already created indexed rows in our tables through primary and foreign keys. Adding a unique constraint would also create an index, but some columns may want the benefits of the index without the restraints of uniqueness and keys. Due to indexes creating their own tables, it is best to apply indexes to tables/columns you often query and typically don't update often. 
+
+To check what indexes our sales table currently has we can run:
+~~~~sql
+SHOW INDEXES FROM Sales;
+~~~~
+
+To add an index to a table we would probably choose Employees because we don't plan on adding data nearly as much as Sales. The only column from Employees without an index that could benefit would be the Employed column. To add an index we simply run:
+~~~~sql
+CREATE INDEX employed_idx ON Employees(Employed);
+~~~~
+If we wanted to remove the index we would run:
+~~~~sql
+ALTER TABLE Employees DROP INDEX employed_idx;
+~~~~
